@@ -14,7 +14,7 @@ class IOS26DemoApp extends StatefulWidget {
 
 class _IOS26DemoAppState extends State<IOS26DemoApp> {
   ThemeMode _themeMode = ThemeMode.system;
-  Color _accentColor = const Color(0xFF5B15FC); // Meditouch iOS Purple
+  Color _accentColor = const Color(0xFF30D158); 
 
   void _toggleTheme() {
     setState(() {
@@ -107,10 +107,10 @@ class _DemoScreenState extends State<DemoScreen> {
 
     final pages = [
       _buildTabContent('Home', Icons.home_rounded),
-      _buildTabContent('Pharmacy', Icons.medication_rounded),
-      _buildTabContent('Doctors', Icons.medical_services_rounded),
-      _buildTabContent('AI Chat', Icons.auto_awesome_rounded),
-      _buildTabContent('Settings', Icons.settings_rounded),
+      _buildTabContent('Explore', Icons.explore_rounded),
+      _buildTabContent('Favorites', Icons.favorite_rounded),
+      _buildTabContent('Alerts', Icons.notifications_rounded),
+      _buildTabContent('Profile', Icons.person_rounded),
     ];
 
     final effectiveBorderColor = _customBorderColor ??
@@ -147,7 +147,8 @@ class _DemoScreenState extends State<DemoScreen> {
             _currentIndex = index;
           });
         },
-        style: (isDark ? IOS26NavThemeData.dark() : IOS26NavThemeData.light()).copyWith(
+        style: (isDark ? IOS26NavThemeData.dark() : IOS26NavThemeData.light())
+            .copyWith(
           activeColor: widget.selectedAccent,
           blurSigmaX: _blurSigma,
           blurSigmaY: _blurSigma,
@@ -157,34 +158,34 @@ class _DemoScreenState extends State<DemoScreen> {
             icon: Icons.home_outlined,
             activeIcon: Icons.home_rounded,
             label: 'Home',
-            tooltip: 'Home Feed',
-          ),
-          IOS26NavItem.icon(
-            icon: Icons.medication_outlined,
-            activeIcon: Icons.medication_rounded,
-            label: 'Pharmacy',
-            badgeCount: _enableBadges ? 2 : null,
-            tooltip: 'Order Medicines',
+            tooltip: 'Home',
           ),
           const IOS26NavItem.icon(
-            icon: Icons.medical_services_outlined,
-            activeIcon: Icons.medical_services_rounded,
-            label: 'Doctors',
-            tooltip: 'Find Specialists',
+            icon: Icons.explore_outlined,
+            activeIcon: Icons.explore_rounded,
+            label: 'Explore',
+            tooltip: 'Explore',
           ),
           IOS26NavItem.icon(
-            icon: Icons.auto_awesome_outlined,
-            activeIcon: Icons.auto_awesome_rounded,
-            label: 'AI Chat',
+            icon: Icons.favorite_outline_rounded,
+            activeIcon: Icons.favorite_rounded,
+            label: 'Favorites',
+            badgeCount: _enableBadges ? 3 : null,
+            tooltip: 'Favorites',
+          ),
+          IOS26NavItem.icon(
+            icon: Icons.notifications_none_rounded,
+            activeIcon: Icons.notifications_rounded,
+            label: 'Alerts',
             badgeText: _enableBadges ? 'NEW' : null,
-            tooltip: 'AI Medical Assistant',
+            tooltip: 'Notifications',
           ),
           IOS26NavItem.icon(
-            icon: Icons.settings_outlined,
-            activeIcon: Icons.settings_rounded,
-            label: 'Settings',
+            icon: Icons.person_outline_rounded,
+            activeIcon: Icons.person_rounded,
+            label: 'Profile',
             showBadge: _enableBadges,
-            tooltip: 'Preferences',
+            tooltip: 'Profile',
           ),
         ],
       ),
@@ -218,7 +219,8 @@ class _DemoScreenState extends State<DemoScreen> {
         Card(
           elevation: 0,
           color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -227,7 +229,8 @@ class _DemoScreenState extends State<DemoScreen> {
                 Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor: widget.selectedAccent.withValues(alpha: 0.15),
+                      backgroundColor:
+                          widget.selectedAccent.withValues(alpha: 0.15),
                       child: Icon(icon, color: widget.selectedAccent),
                     ),
                     const SizedBox(width: 14),
@@ -244,7 +247,9 @@ class _DemoScreenState extends State<DemoScreen> {
                 Text(
                   'Frosted glass floating bar with manual control over container border and selected item indicator border.',
                   style: TextStyle(
-                    color: isDark ? const Color(0xFFA8A29E) : const Color(0xFF57534E),
+                    color: isDark
+                        ? const Color(0xFFA8A29E)
+                        : const Color(0xFF57534E),
                     fontSize: 14,
                   ),
                 ),
@@ -256,7 +261,8 @@ class _DemoScreenState extends State<DemoScreen> {
         Card(
           elevation: 0,
           color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -304,7 +310,8 @@ class _DemoScreenState extends State<DemoScreen> {
                   children: [
                     const Text(
                       'Container Border Strength',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Text(
                       _borderWidth == 0.0
@@ -359,7 +366,8 @@ class _DemoScreenState extends State<DemoScreen> {
                   children: [
                     const Text(
                       'Selected Item Border Strength',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Text(
                       _selectedItemBorderWidth == 0.0
@@ -442,7 +450,8 @@ class _DemoScreenState extends State<DemoScreen> {
           return Card(
             elevation: 0,
             color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
               leading: CircleAvatar(
@@ -450,7 +459,8 @@ class _DemoScreenState extends State<DemoScreen> {
                 child: Text('#${i + 1}'),
               ),
               title: Text('Scrollable Content Row ${i + 1}'),
-              subtitle: const Text('Passes smoothly under ambient fade gradient'),
+              subtitle:
+                  const Text('Passes smoothly under ambient fade gradient'),
             ),
           );
         }),
