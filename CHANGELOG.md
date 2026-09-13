@@ -11,3 +11,8 @@
 - Comprehensive icon customizability (IconData, SVGs, custom Widgets, active/inactive icons).
 - Built-in support for numeric, textual, and dot badges.
 - Subtle iOS haptic feedback on tab selection.
+
+
+## 0.0.2
+
+- Updated repository metadata.
