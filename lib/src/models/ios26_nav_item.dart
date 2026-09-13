@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 ///
 /// Supports either an [IconData] or custom [Widget] for both normal and active states,
 /// optional text or custom widget labels, badges (dot, count, or custom badge widget),
-/// and per-item color overrides.
+/// per-item color overrides, and per-item selected border overrides.
 class IOS26NavItem {
   /// The icon to display when unselected. Can be an [IconData] or custom [Widget].
   final Widget? icon;
@@ -31,6 +31,15 @@ class IOS26NavItem {
   /// Inactive color override for this specific item.
   /// If null, uses the theme's `inactiveColor`.
   final Color? inactiveColor;
+
+  /// Optional border override for the gliding indicator capsule when this item is selected.
+  final BoxBorder? selectedBorder;
+
+  /// Optional border color for the gliding indicator capsule when this item is selected.
+  final Color? selectedBorderColor;
+
+  /// Optional border width / strength for the gliding indicator capsule when this item is selected.
+  final double? selectedBorderWidth;
 
   /// An optional badge widget to display on top-right of the item icon.
   /// If provided, overrides [badgeCount] and [badgeText].
@@ -71,6 +80,9 @@ class IOS26NavItem {
     this.customLabel,
     this.activeColor,
     this.inactiveColor,
+    this.selectedBorder,
+    this.selectedBorderColor,
+    this.selectedBorderWidth,
     this.badge,
     this.badgeCount,
     this.badgeText,
@@ -93,6 +105,9 @@ class IOS26NavItem {
     Widget? customLabel,
     Color? activeColor,
     Color? inactiveColor,
+    BoxBorder? selectedBorder,
+    Color? selectedBorderColor,
+    double? selectedBorderWidth,
     Widget? badge,
     int? badgeCount,
     String? badgeText,
@@ -109,6 +124,9 @@ class IOS26NavItem {
           customLabel: customLabel,
           activeColor: activeColor,
           inactiveColor: inactiveColor,
+          selectedBorder: selectedBorder,
+          selectedBorderColor: selectedBorderColor,
+          selectedBorderWidth: selectedBorderWidth,
           badge: badge,
           badgeCount: badgeCount,
           badgeText: badgeText,
@@ -128,6 +146,9 @@ class IOS26NavItem {
     Widget? customLabel,
     Color? activeColor,
     Color? inactiveColor,
+    BoxBorder? selectedBorder,
+    Color? selectedBorderColor,
+    double? selectedBorderWidth,
     Widget? badge,
     int? badgeCount,
     String? badgeText,
@@ -144,6 +165,9 @@ class IOS26NavItem {
           customLabel: customLabel,
           activeColor: activeColor,
           inactiveColor: inactiveColor,
+          selectedBorder: selectedBorder,
+          selectedBorderColor: selectedBorderColor,
+          selectedBorderWidth: selectedBorderWidth,
           badge: badge,
           badgeCount: badgeCount,
           badgeText: badgeText,

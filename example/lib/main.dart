@@ -90,6 +90,8 @@ class _DemoScreenState extends State<DemoScreen> {
   double _blurSigma = 30.0;
   double _borderWidth = 1.0;
   Color? _customBorderColor;
+  double _selectedItemBorderWidth = 1.0;
+  Color? _selectedItemBorderColor;
 
   final List<Color> _availableAccents = const [
     Color(0xFF5B15FC), // Apple System Purple / Meditouch
@@ -138,6 +140,8 @@ class _DemoScreenState extends State<DemoScreen> {
         currentIndex: _currentIndex,
         borderColor: effectiveBorderColor,
         borderWidth: _borderWidth,
+        selectedItemBorderColor: _selectedItemBorderColor,
+        selectedItemBorderWidth: _selectedItemBorderWidth,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
@@ -190,13 +194,22 @@ class _DemoScreenState extends State<DemoScreen> {
   Widget _buildTabContent(String title, IconData icon) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final borderPresets = [
+    final containerBorderPresets = [
       {'name': 'Default iOS', 'color': null},
       {'name': 'White', 'color': Colors.white},
       {'name': 'Accent', 'color': widget.selectedAccent},
       {'name': 'Cyan Glow', 'color': const Color(0xFF00F0FF)},
       {'name': 'Gold Glow', 'color': const Color(0xFFFFD700)},
       {'name': 'Transparent', 'color': Colors.transparent},
+    ];
+
+    final selectedBorderPresets = [
+      {'name': 'Default (Subtle)', 'color': null},
+      {'name': 'Accent Color', 'color': widget.selectedAccent},
+      {'name': 'White Frost', 'color': Colors.white},
+      {'name': 'Gold Pill', 'color': const Color(0xFFFFD700)},
+      {'name': 'Cyan Pill', 'color': const Color(0xFF00F0FF)},
+      {'name': 'No Border', 'color': Colors.transparent},
     ];
 
     return ListView(
@@ -229,7 +242,7 @@ class _DemoScreenState extends State<DemoScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Frosted glass floating bar with manual control over border color, border strength, blur, and theme colors.',
+                  'Frosted glass floating bar with manual control over container border and selected item indicator border.',
                   style: TextStyle(
                     color: isDark ? const Color(0xFFA8A29E) : const Color(0xFF57534E),
                     fontSize: 14,
@@ -285,12 +298,12 @@ class _DemoScreenState extends State<DemoScreen> {
                 ),
                 const Divider(height: 32),
 
-                // Border Customization Section
+                // Container Border Customization Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Border Strength (Width)',
+                      'Container Border Strength',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Text(
@@ -317,14 +330,14 @@ class _DemoScreenState extends State<DemoScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Border Color',
+                  'Container Border Color',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: borderPresets.map((preset) {
+                  children: containerBorderPresets.map((preset) {
                     final color = preset['color'] as Color?;
                     final isSelected = _customBorderColor == color;
                     return ChoiceChip(
@@ -333,6 +346,61 @@ class _DemoScreenState extends State<DemoScreen> {
                       onSelected: (selected) {
                         setState(() {
                           _customBorderColor = selected ? color : null;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+                const Divider(height: 32),
+
+                // Selected Item Border Customization Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Selected Item Border Strength',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Text(
+                      _selectedItemBorderWidth == 0.0
+                          ? 'Disabled'
+                          : '${_selectedItemBorderWidth.toStringAsFixed(1)} px',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: widget.selectedAccent,
+                      ),
+                    ),
+                  ],
+                ),
+                Slider.adaptive(
+                  min: 0.0,
+                  max: 4.0,
+                  divisions: 40,
+                  value: _selectedItemBorderWidth,
+                  onChanged: (val) {
+                    setState(() {
+                      _selectedItemBorderWidth = val;
+                    });
+                  },
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Selected Item Border Color',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: selectedBorderPresets.map((preset) {
+                    final color = preset['color'] as Color?;
+                    final isSelected = _selectedItemBorderColor == color;
+                    return ChoiceChip(
+                      label: Text(preset['name'] as String),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        setState(() {
+                          _selectedItemBorderColor = selected ? color : null;
                         });
                       },
                     );

@@ -55,18 +55,21 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
   /// Box shadows applied to the navigation bar container.
   final List<BoxShadow>? boxShadow;
 
-  // --- Gliding Frosted Indicator Capsule ---
+  // --- Gliding Frosted Indicator Capsule (Selected Item) ---
   /// Color of the gliding pill indicator.
   final Color indicatorColor;
 
   /// Optional full decoration for the gliding indicator (overrides [indicatorColor] and [indicatorBorderRadius]).
   final Decoration? indicatorDecoration;
 
-  /// Optional border color for the gliding pill indicator. Default: null (no border).
-  final Color? indicatorBorderColor;
+  /// Full custom [BoxBorder] for the selected item gliding pill indicator.
+  final BoxBorder? selectedItemBorder;
 
-  /// Width / strength of the gliding pill indicator border. Default: 0.0.
-  final double indicatorBorderWidth;
+  /// Border color for the selected item gliding indicator.
+  final Color? selectedItemBorderColor;
+
+  /// Border width / strength for the selected item gliding indicator. Default: 0.0.
+  final double selectedItemBorderWidth;
 
   /// Border radius of the gliding pill indicator. Default: BorderRadius.circular(30.0)
   final BorderRadiusGeometry indicatorBorderRadius;
@@ -167,8 +170,9 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
     this.boxShadow,
     required this.indicatorColor,
     this.indicatorDecoration,
-    this.indicatorBorderColor,
-    this.indicatorBorderWidth = 0.0,
+    this.selectedItemBorder,
+    this.selectedItemBorderColor,
+    this.selectedItemBorderWidth = 0.0,
     required this.indicatorBorderRadius,
     required this.indicatorPadding,
     required this.indicatorAnimationDuration,
@@ -208,12 +212,34 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
     return Border.all(color: borderColor!, width: borderWidth);
   }
 
+  /// Resolves the effective [BoxBorder] for the selected item indicator capsule.
+  BoxBorder? get effectiveIndicatorBorder {
+    if (selectedItemBorder != null) {
+      return selectedItemBorder;
+    }
+    if (selectedItemBorderWidth <= 0 ||
+        selectedItemBorderColor == null ||
+        selectedItemBorderColor == Colors.transparent) {
+      return null;
+    }
+    return Border.all(color: selectedItemBorderColor!, width: selectedItemBorderWidth);
+  }
+
+  /// Shorthand alias for [selectedItemBorderColor].
+  Color? get indicatorBorderColor => selectedItemBorderColor;
+
+  /// Shorthand alias for [selectedItemBorderWidth].
+  double get indicatorBorderWidth => selectedItemBorderWidth;
+
   /// Light mode theme preset matching iOS 26 glass aesthetic.
   factory IOS26NavThemeData.light({
     Color? activeColor,
     Color? inactiveColor,
     Color? backgroundColor,
     Color? indicatorColor,
+    BoxBorder? selectedItemBorder,
+    Color? selectedItemBorderColor,
+    double? selectedItemBorderWidth,
     Color? indicatorBorderColor,
     double? indicatorBorderWidth,
     Color? badgeColor,
@@ -234,6 +260,15 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
     final effectiveBorder = border ??
         (effectiveBorderWidth > 0 && effectiveBorderColor != Colors.transparent
             ? Border.all(color: effectiveBorderColor, width: effectiveBorderWidth)
+            : null);
+
+    final effectiveSelectedBorderColor = selectedItemBorderColor ?? indicatorBorderColor;
+    final effectiveSelectedBorderWidth = selectedItemBorderWidth ?? indicatorBorderWidth ?? 0.0;
+    final effectiveSelectedBorder = selectedItemBorder ??
+        (effectiveSelectedBorderWidth > 0 &&
+                effectiveSelectedBorderColor != null &&
+                effectiveSelectedBorderColor != Colors.transparent
+            ? Border.all(color: effectiveSelectedBorderColor, width: effectiveSelectedBorderWidth)
             : null);
 
     return IOS26NavThemeData(
@@ -257,8 +292,9 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
         ),
       ],
       indicatorColor: indicatorColor ?? Colors.white.withValues(alpha: 0.94),
-      indicatorBorderColor: indicatorBorderColor,
-      indicatorBorderWidth: indicatorBorderWidth ?? 0.0,
+      selectedItemBorder: effectiveSelectedBorder,
+      selectedItemBorderColor: effectiveSelectedBorderColor,
+      selectedItemBorderWidth: effectiveSelectedBorderWidth,
       indicatorBorderRadius: BorderRadius.circular(30.0),
       indicatorPadding: EdgeInsets.zero,
       indicatorAnimationDuration: const Duration(milliseconds: 300),
@@ -307,6 +343,9 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
     Color? inactiveColor,
     Color? backgroundColor,
     Color? indicatorColor,
+    BoxBorder? selectedItemBorder,
+    Color? selectedItemBorderColor,
+    double? selectedItemBorderWidth,
     Color? indicatorBorderColor,
     double? indicatorBorderWidth,
     Color? badgeColor,
@@ -327,6 +366,15 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
     final effectiveBorder = border ??
         (effectiveBorderWidth > 0 && effectiveBorderColor != Colors.transparent
             ? Border.all(color: effectiveBorderColor, width: effectiveBorderWidth)
+            : null);
+
+    final effectiveSelectedBorderColor = selectedItemBorderColor ?? indicatorBorderColor;
+    final effectiveSelectedBorderWidth = selectedItemBorderWidth ?? indicatorBorderWidth ?? 0.0;
+    final effectiveSelectedBorder = selectedItemBorder ??
+        (effectiveSelectedBorderWidth > 0 &&
+                effectiveSelectedBorderColor != null &&
+                effectiveSelectedBorderColor != Colors.transparent
+            ? Border.all(color: effectiveSelectedBorderColor, width: effectiveSelectedBorderWidth)
             : null);
 
     return IOS26NavThemeData(
@@ -350,8 +398,9 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
         ),
       ],
       indicatorColor: indicatorColor ?? Colors.white.withValues(alpha: 0.16),
-      indicatorBorderColor: indicatorBorderColor,
-      indicatorBorderWidth: indicatorBorderWidth ?? 0.0,
+      selectedItemBorder: effectiveSelectedBorder,
+      selectedItemBorderColor: effectiveSelectedBorderColor,
+      selectedItemBorderWidth: effectiveSelectedBorderWidth,
       indicatorBorderRadius: BorderRadius.circular(30.0),
       indicatorPadding: EdgeInsets.zero,
       indicatorAnimationDuration: const Duration(milliseconds: 300),
@@ -460,6 +509,9 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
     List<BoxShadow>? boxShadow,
     Color? indicatorColor,
     Decoration? indicatorDecoration,
+    BoxBorder? selectedItemBorder,
+    Color? selectedItemBorderColor,
+    double? selectedItemBorderWidth,
     Color? indicatorBorderColor,
     double? indicatorBorderWidth,
     BorderRadiusGeometry? indicatorBorderRadius,
@@ -498,6 +550,22 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
                 : null)
             : this.border);
 
+    final effectiveSelectedBorderColor =
+        selectedItemBorderColor ?? indicatorBorderColor ?? this.selectedItemBorderColor;
+    final effectiveSelectedBorderWidth =
+        selectedItemBorderWidth ?? indicatorBorderWidth ?? this.selectedItemBorderWidth;
+    final effectiveSelectedBorder = selectedItemBorder ??
+        ((selectedItemBorderColor != null ||
+                indicatorBorderColor != null ||
+                selectedItemBorderWidth != null ||
+                indicatorBorderWidth != null)
+            ? (effectiveSelectedBorderWidth > 0 &&
+                    effectiveSelectedBorderColor != null &&
+                    effectiveSelectedBorderColor != Colors.transparent
+                ? Border.all(color: effectiveSelectedBorderColor, width: effectiveSelectedBorderWidth)
+                : null)
+            : this.selectedItemBorder);
+
     return IOS26NavThemeData(
       height: height ?? this.height,
       padding: padding ?? this.padding,
@@ -515,8 +583,9 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
       boxShadow: boxShadow ?? this.boxShadow,
       indicatorColor: indicatorColor ?? this.indicatorColor,
       indicatorDecoration: indicatorDecoration ?? this.indicatorDecoration,
-      indicatorBorderColor: indicatorBorderColor ?? this.indicatorBorderColor,
-      indicatorBorderWidth: indicatorBorderWidth ?? this.indicatorBorderWidth,
+      selectedItemBorder: effectiveSelectedBorder,
+      selectedItemBorderColor: effectiveSelectedBorderColor,
+      selectedItemBorderWidth: effectiveSelectedBorderWidth,
       indicatorBorderRadius: indicatorBorderRadius ?? this.indicatorBorderRadius,
       indicatorPadding: indicatorPadding ?? this.indicatorPadding,
       indicatorAnimationDuration: indicatorAnimationDuration ?? this.indicatorAnimationDuration,
@@ -570,9 +639,13 @@ class IOS26NavThemeData extends ThemeExtension<IOS26NavThemeData> {
       boxShadow: BoxShadow.lerpList(boxShadow, other.boxShadow, t),
       indicatorColor: Color.lerp(indicatorColor, other.indicatorColor, t) ?? indicatorColor,
       indicatorDecoration: Decoration.lerp(indicatorDecoration, other.indicatorDecoration, t),
-      indicatorBorderColor: Color.lerp(indicatorBorderColor, other.indicatorBorderColor, t),
-      indicatorBorderWidth:
-          lerpDouble(indicatorBorderWidth, other.indicatorBorderWidth, t) ?? indicatorBorderWidth,
+      selectedItemBorder:
+          BoxBorder.lerp(effectiveIndicatorBorder, other.effectiveIndicatorBorder, t),
+      selectedItemBorderColor:
+          Color.lerp(selectedItemBorderColor, other.selectedItemBorderColor, t),
+      selectedItemBorderWidth:
+          lerpDouble(selectedItemBorderWidth, other.selectedItemBorderWidth, t) ??
+              selectedItemBorderWidth,
       indicatorBorderRadius:
           BorderRadiusGeometry.lerp(indicatorBorderRadius, other.indicatorBorderRadius, t) ??
               indicatorBorderRadius,

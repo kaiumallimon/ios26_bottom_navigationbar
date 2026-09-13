@@ -33,6 +33,16 @@ class IOS26BottomNavigationBar extends StatelessWidget {
   /// Set to 0.0 to disable the border.
   final double? borderWidth;
 
+  /// Optional direct override for the selected item indicator border color.
+  final Color? selectedItemBorderColor;
+
+  /// Optional direct override for the selected item indicator border width / strength.
+  /// Set to 0.0 to disable the selected item border.
+  final double? selectedItemBorderWidth;
+
+  /// Optional direct override for the selected item indicator border.
+  final BoxBorder? selectedItemBorder;
+
   /// Optional custom builder for the gliding indicator capsule.
   final Widget Function(BuildContext context, int index, Size itemSize)? indicatorBuilder;
 
@@ -53,6 +63,9 @@ class IOS26BottomNavigationBar extends StatelessWidget {
     this.style,
     this.borderColor,
     this.borderWidth,
+    this.selectedItemBorderColor,
+    this.selectedItemBorderWidth,
+    this.selectedItemBorder,
     this.indicatorBuilder,
     this.itemBuilder,
   })  : assert(items.length > 0, 'Items list must not be empty.'),
@@ -70,10 +83,17 @@ class IOS26BottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseTheme = IOS26NavThemeData.resolve(context, override: style);
-    final effectiveTheme = (borderColor != null || borderWidth != null)
+    final effectiveTheme = (borderColor != null ||
+            borderWidth != null ||
+            selectedItemBorderColor != null ||
+            selectedItemBorderWidth != null ||
+            selectedItemBorder != null)
         ? baseTheme.copyWith(
             borderColor: borderColor,
             borderWidth: borderWidth,
+            selectedItemBorderColor: selectedItemBorderColor,
+            selectedItemBorderWidth: selectedItemBorderWidth,
+            selectedItemBorder: selectedItemBorder,
           )
         : baseTheme;
 
@@ -94,6 +114,15 @@ class IOS26BottomNavigationBar extends StatelessWidget {
           final itemWidth = totalWidth / itemCount;
           final itemSize = Size(itemWidth, constraints.maxHeight);
 
+          final currentItem = items[currentIndex];
+          final currentItemBorder = currentItem.selectedBorder ??
+              (currentItem.selectedBorderWidth != null && currentItem.selectedBorderColor != null
+                  ? Border.all(
+                      color: currentItem.selectedBorderColor!,
+                      width: currentItem.selectedBorderWidth!,
+                    )
+                  : effectiveTheme.effectiveIndicatorBorder);
+
           return Stack(
             children: [
               // Smooth Gliding Frosted Glass Pill Capsule
@@ -112,13 +141,7 @@ class IOS26BottomNavigationBar extends StatelessWidget {
                             BoxDecoration(
                               color: effectiveTheme.indicatorColor,
                               borderRadius: effectiveTheme.indicatorBorderRadius,
-                              border: effectiveTheme.indicatorBorderWidth > 0 &&
-                                      effectiveTheme.indicatorBorderColor != null
-                                  ? Border.all(
-                                      color: effectiveTheme.indicatorBorderColor!,
-                                      width: effectiveTheme.indicatorBorderWidth,
-                                    )
-                                  : null,
+                              border: currentItemBorder,
                             ),
                       ),
                 ),

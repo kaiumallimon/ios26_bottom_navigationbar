@@ -169,6 +169,61 @@ void main() {
       expect(border.top.width, 2.5);
     });
 
+    testWidgets('manually controls selected item border color and strength', (tester) async {
+      int activeIndex = 0;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: StatefulBuilder(
+            builder: (context, setState) {
+              return Scaffold(
+                bottomNavigationBar: IOS26BottomNavigationBar(
+                  currentIndex: activeIndex,
+                  onTap: (i) => setState(() => activeIndex = i),
+                  selectedItemBorderColor: Colors.blue,
+                  selectedItemBorderWidth: 1.8,
+                  items: const [
+                    IOS26NavItem.icon(icon: Icons.home, label: 'Home'),
+                    IOS26NavItem.icon(
+                      icon: Icons.star,
+                      label: 'VIP',
+                      selectedBorderColor: Colors.amber,
+                      selectedBorderWidth: 3.0,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      );
+
+      // Find the animated gliding pill indicator container
+      final animatedPos = tester.widget<AnimatedPositioned>(find.byType(AnimatedPositioned).first);
+      final padding = animatedPos.child as Padding;
+      final indicatorContainer = padding.child as Container;
+      final indicatorDecoration = indicatorContainer.decoration as BoxDecoration;
+
+      expect(indicatorDecoration.border, isNotNull);
+      final border0 = indicatorDecoration.border as Border;
+      expect(border0.top.color, Colors.blue);
+      expect(border0.top.width, 1.8);
+
+      // Tap second tab which has per-item selected border
+      await tester.tap(find.text('VIP'));
+      await tester.pumpAndSettle();
+
+      final animatedPos2 = tester.widget<AnimatedPositioned>(find.byType(AnimatedPositioned).first);
+      final padding2 = animatedPos2.child as Padding;
+      final indicatorContainer2 = padding2.child as Container;
+      final indicatorDecoration2 = indicatorContainer2.decoration as BoxDecoration;
+
+      expect(indicatorDecoration2.border, isNotNull);
+      final border1 = indicatorDecoration2.border as Border;
+      expect(border1.top.color, Colors.amber);
+      expect(border1.top.width, 3.0);
+    });
+
     testWidgets('renders in IOS26NavScaffold with ambient fade', (tester) async {
       await tester.pumpWidget(
         MaterialApp(

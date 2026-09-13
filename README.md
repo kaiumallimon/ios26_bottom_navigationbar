@@ -186,23 +186,36 @@ MaterialApp(
 );
 ```
 
-### 5. Manual Border Color & Strength Customization
+### 5. Manual Border & Selected Item Border Customization
 
-You can manually control border color and strength directly on `IOS26BottomNavigationBar` or via `IOS26NavThemeData`:
+You can manually control the border of the container pill as well as the **selected item indicator pill** directly on `IOS26BottomNavigationBar`, per-tab on `IOS26NavItem`, or via `IOS26NavThemeData`:
 
 ```dart
-// Direct parameters on the navigation bar:
 IOS26BottomNavigationBar(
   currentIndex: _currentIndex,
-  borderColor: Colors.purple.withValues(alpha: 0.5), // Custom border color
-  borderWidth: 2.0,                                  // Border strength / stroke width
-  items: items,
+  // Container pill border:
+  borderColor: Colors.purple.withValues(alpha: 0.5),
+  borderWidth: 2.0,
+  // Selected item indicator border:
+  selectedItemBorderColor: Colors.amber, // Highlight active pill border
+  selectedItemBorderWidth: 1.5,
+  items: [
+    const IOS26NavItem.icon(icon: Icons.home, label: 'Home'),
+    // Per-item selected border override:
+    const IOS26NavItem.icon(
+      icon: Icons.star,
+      label: 'VIP',
+      selectedBorderColor: Colors.cyanAccent,
+      selectedBorderWidth: 2.0,
+    ),
+  ],
 )
 
-// Or disable the border completely:
+// Or disable borders completely:
 IOS26BottomNavigationBar(
   currentIndex: _currentIndex,
-  borderWidth: 0.0, // Disables border
+  borderWidth: 0.0,             // Disables container border
+  selectedItemBorderWidth: 0.0, // Disables selected item indicator border
   items: items,
 )
 ```
@@ -223,6 +236,9 @@ IOS26BottomNavigationBar(
 | `customLabel` | `Widget?` | Custom widget to display as label |
 | `activeColor` | `Color?` | Custom active color override for this item |
 | `inactiveColor` | `Color?` | Custom inactive color override for this item |
+| `selectedBorder` | `BoxBorder?` | Custom border override when this item is selected |
+| `selectedBorderColor` | `Color?` | Custom border color when this item is selected |
+| `selectedBorderWidth` | `double?` | Custom border width when this item is selected |
 | `badge` | `Widget?` | Custom badge widget |
 | `badgeCount` | `int?` | Numeric badge count (e.g. `5` or `99+`) |
 | `badgeText` | `String?` | Text badge (e.g. `'NEW'`) |
@@ -244,13 +260,14 @@ IOS26BottomNavigationBar(
 | `borderRadius` | `BorderRadius.circular(38.0)` | Capsule border radius |
 | `blurSigmaX` / `Y` | `30.0` | Backdrop filter blur intensity |
 | `backgroundColor` | `0xFFF6F6F8 (80%)` / `0xFF161618 (72%)` | Glass capsule background color |
-| `borderColor` | `Colors.white (85% / 18%)` | Manually controlled border color |
-| `borderWidth` | `0.9` | Border strength / stroke width (`0.0` to disable) |
+| `borderColor` | `Colors.white (85% / 18%)` | Manually controlled container border color |
+| `borderWidth` | `0.9` | Container border strength (`0.0` to disable) |
 | `border` | `effectiveBorder` | Full custom BoxBorder (overrides color/width) |
 | `boxShadow` | Subtle ambient drop shadow | Floating elevation shadows |
 | `indicatorColor` | `Colors.white (94% / 16%)` | Gliding pill capsule background |
-| `indicatorBorderColor` | `null` | Gliding pill border color |
-| `indicatorBorderWidth` | `0.0` | Gliding pill border strength |
+| `selectedItemBorderColor` | `null` | Gliding pill indicator border color |
+| `selectedItemBorderWidth` | `0.0` | Gliding pill indicator border strength |
+| `selectedItemBorder` | `effectiveIndicatorBorder` | Full custom BoxBorder for selected pill |
 | `indicatorBorderRadius` | `BorderRadius.circular(30.0)` | Gliding pill border radius |
 | `indicatorAnimationDuration`| `300ms` | Gliding animation duration |
 | `indicatorAnimationCurve` | `Curves.fastEaseInToSlowEaseOut` | Gliding animation easing curve |
