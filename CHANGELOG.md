@@ -1,3 +1,19 @@
+## 0.0.4
+- Updated package version in documentation
+
+
+## 0.0.3
+
+- Updated package documentation and examples.
+- Improved README usage examples.
+- Added clearer documentation for customization, badges, borders, and themes.
+
+
+## 0.0.2
+
+- Updated repository metadata.
+
+
 ## 0.0.1
 
 - Initial release of `ios26_bottom_navigationbar`.
@@ -11,14 +27,3 @@
 - Comprehensive icon customizability (IconData, SVGs, custom Widgets, active/inactive icons).
 - Built-in support for numeric, textual, and dot badges.
 - Subtle iOS haptic feedback on tab selection.
-
-
-## 0.0.2
-
-- Updated repository metadata.
-
-## 0.0.3
-
-- Updated package documentation and examples.
-- Improved README usage examples.
-- Added clearer documentation for customization, badges, borders, and themes.

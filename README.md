@@ -47,7 +47,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ios26_bottom_navigationbar: ^0.0.3
+  ios26_bottom_navigationbar: ^0.0.4
 ```
 
 Then import it:
