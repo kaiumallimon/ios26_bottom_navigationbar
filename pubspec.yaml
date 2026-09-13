@@ -1,6 +1,6 @@
 name: ios26_bottom_navigationbar
 description: A customizable iOS 26 frosted glass floating bottom navigation bar for Flutter with gliding pill indicator, ambient fade, and full theme reactivity.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/kaiumallimon/ios26_bottom_navigationbar
 repository: https://github.com/kaiumallimon/ios26_bottom_navigationbar
 issue_tracker: https://github.com/kaiumallimon/ios26_bottom_navigationbar/issues
