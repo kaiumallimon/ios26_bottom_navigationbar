@@ -138,6 +138,37 @@ void main() {
       expect(container.constraints?.maxHeight, 70.0);
     });
 
+    testWidgets('manually controls border color and strength via parameters', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            bottomNavigationBar: IOS26BottomNavigationBar(
+              currentIndex: 0,
+              borderColor: Colors.purple,
+              borderWidth: 2.5,
+              items: const [
+                IOS26NavItem.icon(icon: Icons.home, label: 'Home'),
+                IOS26NavItem.icon(icon: Icons.settings, label: 'Settings'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      final container = tester.widget<Container>(
+        find.descendant(
+          of: find.byType(IOS26BottomNavigationBar),
+          matching: find.byType(Container).first,
+        ),
+      );
+
+      final decoration = container.decoration as BoxDecoration;
+      expect(decoration.border, isNotNull);
+      final border = decoration.border as Border;
+      expect(border.top.color, Colors.purple);
+      expect(border.top.width, 2.5);
+    });
+
     testWidgets('renders in IOS26NavScaffold with ambient fade', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -169,6 +200,22 @@ void main() {
       expect(dark.height, 62.0);
       expect(light.borderRadius, BorderRadius.circular(38.0));
       expect(dark.borderRadius, BorderRadius.circular(38.0));
+      expect(light.borderWidth, 0.9);
+      expect(dark.borderWidth, 0.9);
+    });
+
+    test('border customization and zero strength (no border)', () {
+      final borderNone = IOS26NavThemeData.light(borderWidth: 0.0);
+      expect(borderNone.effectiveBorder, isNull);
+
+      final customBorder = IOS26NavThemeData.light(
+        borderColor: Colors.cyan,
+        borderWidth: 3.0,
+      );
+      expect(customBorder.effectiveBorder, isNotNull);
+      final border = customBorder.effectiveBorder as Border;
+      expect(border.top.color, Colors.cyan);
+      expect(border.top.width, 3.0);
     });
 
     test('copyWith updates specified fields', () {
@@ -177,11 +224,15 @@ void main() {
         height: 80.0,
         activeColor: Colors.deepOrange,
         enableHapticFeedback: false,
+        borderColor: Colors.amber,
+        borderWidth: 4.0,
       );
 
       expect(modified.height, 80.0);
       expect(modified.activeColor, Colors.deepOrange);
       expect(modified.enableHapticFeedback, false);
+      expect(modified.borderColor, Colors.amber);
+      expect(modified.borderWidth, 4.0);
       expect(modified.inactiveColor, base.inactiveColor);
     });
   });

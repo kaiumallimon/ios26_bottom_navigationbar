@@ -186,6 +186,27 @@ MaterialApp(
 );
 ```
 
+### 5. Manual Border Color & Strength Customization
+
+You can manually control border color and strength directly on `IOS26BottomNavigationBar` or via `IOS26NavThemeData`:
+
+```dart
+// Direct parameters on the navigation bar:
+IOS26BottomNavigationBar(
+  currentIndex: _currentIndex,
+  borderColor: Colors.purple.withValues(alpha: 0.5), // Custom border color
+  borderWidth: 2.0,                                  // Border strength / stroke width
+  items: items,
+)
+
+// Or disable the border completely:
+IOS26BottomNavigationBar(
+  currentIndex: _currentIndex,
+  borderWidth: 0.0, // Disables border
+  items: items,
+)
+```
+
 ---
 
 ## 🛠️ API Reference
@@ -223,9 +244,13 @@ MaterialApp(
 | `borderRadius` | `BorderRadius.circular(38.0)` | Capsule border radius |
 | `blurSigmaX` / `Y` | `30.0` | Backdrop filter blur intensity |
 | `backgroundColor` | `0xFFF6F6F8 (80%)` / `0xFF161618 (72%)` | Glass capsule background color |
-| `border` | `Colors.white (85% / 18%), 0.9px` | Subtle capsule border outline |
+| `borderColor` | `Colors.white (85% / 18%)` | Manually controlled border color |
+| `borderWidth` | `0.9` | Border strength / stroke width (`0.0` to disable) |
+| `border` | `effectiveBorder` | Full custom BoxBorder (overrides color/width) |
 | `boxShadow` | Subtle ambient drop shadow | Floating elevation shadows |
 | `indicatorColor` | `Colors.white (94% / 16%)` | Gliding pill capsule background |
+| `indicatorBorderColor` | `null` | Gliding pill border color |
+| `indicatorBorderWidth` | `0.0` | Gliding pill border strength |
 | `indicatorBorderRadius` | `BorderRadius.circular(30.0)` | Gliding pill border radius |
 | `indicatorAnimationDuration`| `300ms` | Gliding animation duration |
 | `indicatorAnimationCurve` | `Curves.fastEaseInToSlowEaseOut` | Gliding animation easing curve |

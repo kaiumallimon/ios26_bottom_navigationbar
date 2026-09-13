@@ -88,6 +88,8 @@ class _DemoScreenState extends State<DemoScreen> {
   int _currentIndex = 0;
   bool _enableBadges = true;
   double _blurSigma = 30.0;
+  double _borderWidth = 1.0;
+  Color? _customBorderColor;
 
   final List<Color> _availableAccents = const [
     Color(0xFF5B15FC), // Apple System Purple / Meditouch
@@ -109,6 +111,11 @@ class _DemoScreenState extends State<DemoScreen> {
       _buildTabContent('Settings', Icons.settings_rounded),
     ];
 
+    final effectiveBorderColor = _customBorderColor ??
+        (isDark
+            ? Colors.white.withValues(alpha: 0.18)
+            : Colors.white.withValues(alpha: 0.85));
+
     return IOS26NavScaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -129,6 +136,8 @@ class _DemoScreenState extends State<DemoScreen> {
       body: pages[_currentIndex],
       navigationBar: IOS26BottomNavigationBar(
         currentIndex: _currentIndex,
+        borderColor: effectiveBorderColor,
+        borderWidth: _borderWidth,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
@@ -181,6 +190,15 @@ class _DemoScreenState extends State<DemoScreen> {
   Widget _buildTabContent(String title, IconData icon) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final borderPresets = [
+      {'name': 'Default iOS', 'color': null},
+      {'name': 'White', 'color': Colors.white},
+      {'name': 'Accent', 'color': widget.selectedAccent},
+      {'name': 'Cyan Glow', 'color': const Color(0xFF00F0FF)},
+      {'name': 'Gold Glow', 'color': const Color(0xFFFFD700)},
+      {'name': 'Transparent', 'color': Colors.transparent},
+    ];
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
       children: [
@@ -211,7 +229,7 @@ class _DemoScreenState extends State<DemoScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'This demo replicates the exact frosted glass floating bar from Meditouch with full customizability.',
+                  'Frosted glass floating bar with manual control over border color, border strength, blur, and theme colors.',
                   style: TextStyle(
                     color: isDark ? const Color(0xFFA8A29E) : const Color(0xFF57534E),
                     fontSize: 14,
@@ -266,6 +284,62 @@ class _DemoScreenState extends State<DemoScreen> {
                   }).toList(),
                 ),
                 const Divider(height: 32),
+
+                // Border Customization Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Border Strength (Width)',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Text(
+                      _borderWidth == 0.0
+                          ? 'Disabled'
+                          : '${_borderWidth.toStringAsFixed(1)} px',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: widget.selectedAccent,
+                      ),
+                    ),
+                  ],
+                ),
+                Slider.adaptive(
+                  min: 0.0,
+                  max: 4.0,
+                  divisions: 40,
+                  value: _borderWidth,
+                  onChanged: (val) {
+                    setState(() {
+                      _borderWidth = val;
+                    });
+                  },
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Border Color',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: borderPresets.map((preset) {
+                    final color = preset['color'] as Color?;
+                    final isSelected = _customBorderColor == color;
+                    return ChoiceChip(
+                      label: Text(preset['name'] as String),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        setState(() {
+                          _customBorderColor = selected ? color : null;
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+                const Divider(height: 32),
+
                 SwitchListTile.adaptive(
                   title: const Text('Show Badges (Count, Dot, Text)'),
                   value: _enableBadges,

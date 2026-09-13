@@ -10,7 +10,7 @@ import 'ios26_nav_item_widget.dart';
 ///
 /// Features a smooth gliding frosted glass pill indicator capsule,
 /// subtle borders, ambient shadows, icon scale animations, and complete
-/// customizability over colors, shapes, typography, and badges.
+/// customizability over colors, shapes, typography, borders, and badges.
 class IOS26BottomNavigationBar extends StatelessWidget {
   /// The list of navigation bar items. Must contain at least 1 item.
   final List<IOS26NavItem> items;
@@ -25,6 +25,13 @@ class IOS26BottomNavigationBar extends StatelessWidget {
   /// If null, resolves from [IOS26NavTheme] or [ThemeData.extensions]
   /// or defaults to light/dark iOS 26 presets.
   final IOS26NavThemeData? style;
+
+  /// Optional direct override for the container border color.
+  final Color? borderColor;
+
+  /// Optional direct override for the container border width / strength.
+  /// Set to 0.0 to disable the border.
+  final double? borderWidth;
 
   /// Optional custom builder for the gliding indicator capsule.
   final Widget Function(BuildContext context, int index, Size itemSize)? indicatorBuilder;
@@ -44,6 +51,8 @@ class IOS26BottomNavigationBar extends StatelessWidget {
     required this.currentIndex,
     this.onTap,
     this.style,
+    this.borderColor,
+    this.borderWidth,
     this.indicatorBuilder,
     this.itemBuilder,
   })  : assert(items.length > 0, 'Items list must not be empty.'),
@@ -60,7 +69,13 @@ class IOS26BottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveTheme = IOS26NavThemeData.resolve(context, override: style);
+    final baseTheme = IOS26NavThemeData.resolve(context, override: style);
+    final effectiveTheme = (borderColor != null || borderWidth != null)
+        ? baseTheme.copyWith(
+            borderColor: borderColor,
+            borderWidth: borderWidth,
+          )
+        : baseTheme;
 
     Widget navBar = Container(
       height: effectiveTheme.height,
@@ -69,7 +84,7 @@ class IOS26BottomNavigationBar extends StatelessWidget {
         color: effectiveTheme.backgroundGradient == null ? effectiveTheme.backgroundColor : null,
         gradient: effectiveTheme.backgroundGradient,
         borderRadius: effectiveTheme.borderRadius,
-        border: effectiveTheme.border,
+        border: effectiveTheme.effectiveBorder,
         boxShadow: effectiveTheme.boxShadow,
       ),
       child: LayoutBuilder(
@@ -97,6 +112,13 @@ class IOS26BottomNavigationBar extends StatelessWidget {
                             BoxDecoration(
                               color: effectiveTheme.indicatorColor,
                               borderRadius: effectiveTheme.indicatorBorderRadius,
+                              border: effectiveTheme.indicatorBorderWidth > 0 &&
+                                      effectiveTheme.indicatorBorderColor != null
+                                  ? Border.all(
+                                      color: effectiveTheme.indicatorBorderColor!,
+                                      width: effectiveTheme.indicatorBorderWidth,
+                                    )
+                                  : null,
                             ),
                       ),
                 ),
