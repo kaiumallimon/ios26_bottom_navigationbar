@@ -3,7 +3,8 @@
 /// Features a smooth gliding frosted glass pill indicator capsule, ambient bottom
 /// fade gradient, backdrop blur, subtle borders, ambient shadows, and comprehensive
 /// theme and icon customization.
-library;
+// ignore: unnecessary_library_name
+library ios26_bottom_navigationbar;
 
 export 'src/models/ios26_nav_item.dart';
 export 'src/theme/ios26_nav_theme.dart';

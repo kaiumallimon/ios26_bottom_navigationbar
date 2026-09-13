@@ -2,7 +2,14 @@
 
 A highly customizable, frosted-glass floating bottom navigation bar for Flutter inspired by next-generation iOS design language.
 
-Features a signature **smooth-gliding pill indicator capsule**, **ambient bottom fade gradient**, **translucent glassmorphism blur**, **reactive icon scaling**, and **100% theme & icon customizability**.
+Features a signature **smooth-gliding pill indicator capsule**, **ambient bottom fade gradient**, **translucent glassmorphism blur**, **reactive icon scaling**, **manual border & selected item border control**, and **100% theme & icon customizability**.
+
+---
+
+<p align="center">
+  <img src="images/preview-bottom-navbar-light.png" alt="iOS 26 Bottom Navigation Bar - Light Mode" width="48%" />
+  <img src="images/preview-bottom-navbar-dark.png" alt="iOS 26 Bottom Navigation Bar - Dark Mode" width="48%" />
+</p>
 
 ---
 
@@ -10,29 +17,43 @@ Features a signature **smooth-gliding pill indicator capsule**, **ambient bottom
 
 - 🫧 **Frosted Glassmorphism**: Pure floating glass pill with customizable backdrop blur (`BackdropFilter`), translucent background, subtle border highlight, and soft elevation shadows.
 - 💊 **Smooth Gliding Pill Indicator**: Animated pill capsule indicator that glides seamlessly across tabs with fluid easing curves (`Curves.fastEaseInToSlowEaseOut`).
+- 🎨 **Manual Border & Selected Item Border Control**: Independently customize or disable the container border and the selected item indicator border with manual color and strength controls.
 - 🌊 **Ambient Bottom Fade Gradient**: Optional ambient gradient overlay (`IOS26AmbientFade` / `IOS26NavScaffold`) ensuring scrollable body content flows beautifully underneath the floating bar without visual clashes.
-- 🎨 **Maximum Customizability**:
-  - **Zero hardcoded colors or icons**: Adjust active colors, inactive colors, pill capsule tints, borders, shadows, blur sigmas, and margins.
-  - **Themes & Extensions**: Built-in `IOS26NavThemeData.light()`, `.dark()`, and `.resolve(context)` with full support for Flutter's `ThemeExtension`.
-  - **Custom Icons & Widgets**: Supports any `IconData` (Material, Cupertino, Lucide, FontAwesome) or custom `Widget` (SVG, Image, Lottie, Rive).
-  - **Independent Active / Inactive States**: Specify distinct icons for active and inactive states.
-  - **Rich Badges**: Built-in support for numeric badges (`badgeCount`), textual badges (`badgeText`), dot badges (`showBadge`), or custom badge widgets.
-  - **Custom Indicator & Item Builders**: Override the pill indicator or item widgets with custom builders for unlimited design freedom.
+- 🎛️ **Zero Hardcoded Styles**:
+  - Adjust active colors, inactive colors, pill capsule tints, borders, shadows, blur sigmas, and margins.
+  - Built-in presets: `IOS26NavThemeData.light()`, `IOS26NavThemeData.dark()`, and `IOS26NavThemeData.resolve(context)` with full support for Flutter's `ThemeExtension`.
+  - Supports any `IconData` (Material, Cupertino, Lucide, FontAwesome) or custom `Widget` (SVG, Image, Lottie, Rive).
+  - Independent active and inactive icon states.
+  - Built-in support for numeric badges (`badgeCount`), textual badges (`badgeText`), dot badges (`showBadge`), or custom badge widgets.
+  - Custom indicator and item builder hooks for complete layout control.
 - 📳 **Haptic Feedback**: Subtle iOS-style tactile feedback on tab selection.
+- 🌐 **Cross-Platform**: Fully compatible with Android, iOS, Web, macOS, Windows, and Linux.
+
+---
+
+## 📱 Platform Support
+
+| Platform | Support |
+|---|---|
+| **iOS** | Supported |
+| **Android** | Supported |
+| **Web** | Supported (HTML / CanvasKit / Wasm) |
+| **macOS** | Supported |
+| **Windows** | Supported |
+| **Linux** | Supported |
 
 ---
 
 ## 🚀 Getting Started
 
-Add the package to your `pubspec.yaml`:
+Add `ios26_bottom_navigationbar` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ios26_bottom_navigationbar:
-    path: /path/to/ios26_bottom_navigationbar # or version constraint when published
+  ios26_bottom_navigationbar: ^0.0.1
 ```
 
-Import the package:
+Import the package in your Dart code:
 
 ```dart
 import 'package:ios26_bottom_navigationbar/ios26_bottom_navigationbar.dart';
@@ -79,7 +100,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             icon: Icons.local_pharmacy_outlined,
             activeIcon: Icons.local_pharmacy_rounded,
             label: 'Pharmacy',
-            badgeCount: 3,
+            badgeCount: 2,
           ),
           IOS26NavItem.icon(
             icon: Icons.medical_services_outlined,
@@ -96,6 +117,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             icon: Icons.settings_outlined,
             activeIcon: Icons.settings_rounded,
             label: 'Settings',
+            showBadge: true,
           ),
         ],
       ),
@@ -106,7 +128,43 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 
 ---
 
-### 2. Standalone Floating Bar in Any `Scaffold`
+### 2. Manual Border & Selected Item Border Customization
+
+You can manually control the border of the container pill as well as the **selected item indicator pill** directly on `IOS26BottomNavigationBar`, per-tab on `IOS26NavItem`, or via `IOS26NavThemeData`:
+
+```dart
+IOS26BottomNavigationBar(
+  currentIndex: _currentIndex,
+  // Container pill border:
+  borderColor: Colors.purple.withValues(alpha: 0.5),
+  borderWidth: 2.0,
+  // Selected item indicator border:
+  selectedItemBorderColor: Colors.amber, // Highlight active pill border
+  selectedItemBorderWidth: 1.5,
+  items: [
+    const IOS26NavItem.icon(icon: Icons.home, label: 'Home'),
+    // Per-item selected border override:
+    const IOS26NavItem.icon(
+      icon: Icons.star,
+      label: 'VIP',
+      selectedBorderColor: Colors.cyanAccent,
+      selectedBorderWidth: 2.0,
+    ),
+  ],
+)
+
+// Or disable borders completely:
+IOS26BottomNavigationBar(
+  currentIndex: _currentIndex,
+  borderWidth: 0.0,             // Disables container border
+  selectedItemBorderWidth: 0.0, // Disables selected item indicator border
+  items: items,
+)
+```
+
+---
+
+### 3. Standalone Floating Bar in Any `Scaffold`
 
 You can also drop `IOS26BottomNavigationBar` into your existing `Scaffold` or custom `Stack`:
 
@@ -128,7 +186,7 @@ Scaffold(
 
 ---
 
-### 3. Custom Icons & Widgets (SVGs, Images, Lottie)
+### 4. Custom Icons & Widgets (SVGs, Images, Lottie)
 
 You can pass arbitrary widgets as icons:
 
@@ -142,7 +200,7 @@ IOS26NavItem.custom(
 
 ---
 
-### 4. Custom Styling & Themes
+### 5. Custom Styling & Themes
 
 `ios26_bottom_navigationbar` offers deep styling control via `IOS26NavThemeData`.
 
@@ -184,40 +242,6 @@ MaterialApp(
   ),
   home: const MyHomeScreen(),
 );
-```
-
-### 5. Manual Border & Selected Item Border Customization
-
-You can manually control the border of the container pill as well as the **selected item indicator pill** directly on `IOS26BottomNavigationBar`, per-tab on `IOS26NavItem`, or via `IOS26NavThemeData`:
-
-```dart
-IOS26BottomNavigationBar(
-  currentIndex: _currentIndex,
-  // Container pill border:
-  borderColor: Colors.purple.withValues(alpha: 0.5),
-  borderWidth: 2.0,
-  // Selected item indicator border:
-  selectedItemBorderColor: Colors.amber, // Highlight active pill border
-  selectedItemBorderWidth: 1.5,
-  items: [
-    const IOS26NavItem.icon(icon: Icons.home, label: 'Home'),
-    // Per-item selected border override:
-    const IOS26NavItem.icon(
-      icon: Icons.star,
-      label: 'VIP',
-      selectedBorderColor: Colors.cyanAccent,
-      selectedBorderWidth: 2.0,
-    ),
-  ],
-)
-
-// Or disable borders completely:
-IOS26BottomNavigationBar(
-  currentIndex: _currentIndex,
-  borderWidth: 0.0,             // Disables container border
-  selectedItemBorderWidth: 0.0, // Disables selected item indicator border
-  items: items,
-)
 ```
 
 ---
@@ -280,6 +304,8 @@ IOS26BottomNavigationBar(
 
 ---
 
-## 📄 License
+## 📄 Additional Information
 
-MIT License. Free for personal and commercial use.
+- **Example**: Check out the full interactive demonstration in the [`example/`](example/) directory.
+- **Bugs & Issues**: Please report any bugs or feature requests on the [GitHub Issues](https://github.com/example/ios26_bottom_navigationbar/issues) tracker.
+- **License**: MIT License. See [LICENSE](LICENSE) for details.
