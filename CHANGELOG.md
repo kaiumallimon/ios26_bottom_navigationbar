@@ -16,3 +16,9 @@
 ## 0.0.2
 
 - Updated repository metadata.
+
+## 0.0.3
+
+- Updated package documentation and examples.
+- Improved README usage examples.
+- Added clearer documentation for customization, badges, borders, and themes.

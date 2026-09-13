@@ -1,71 +1,68 @@
 # ios26_bottom_navigationbar
 
-A highly customizable, frosted-glass floating bottom navigation bar for Flutter inspired by next-generation iOS design language.
+A floating, frosted-glass bottom navigation bar for Flutter, inspired by the visual style of iOS 26.
 
-Features a signature **smooth-gliding pill indicator capsule**, **ambient bottom fade gradient**, **translucent glassmorphism blur**, **reactive icon scaling**, **manual border & selected item border control**, and **100% theme & icon customizability**.
+The package focuses on the details that make a floating navigation bar feel good to use: a smooth sliding selection pill, glass blur, subtle shadows, animated icons, badges, and plenty of control over the styling.
 
----
+It works across iOS, Android, Web, macOS, Windows, and Linux.
 
 <p align="center">
-  <img src="images/preview-bottom-navbar-light.png" alt="iOS 26 Bottom Navigation Bar - Light Mode" width="48%" />
-  <img src="images/preview-bottom-navbar-dark.png" alt="iOS 26 Bottom Navigation Bar - Dark Mode" width="48%" />
+  <img src="images/preview-bottom-navbar-light.png" alt="Light mode preview" width="48%" />
+  <img src="images/preview-bottom-navbar-dark.png" alt="Dark mode preview" width="48%" />
 </p>
 
----
+## Features
 
-## ✨ Features
+- Frosted glass background with configurable blur
+- Floating pill-shaped navigation bar
+- Smooth animated selection indicator
+- Active icon scaling animation
+- Light and dark theme presets
+- Custom colors, borders, shadows, padding, margins, and sizes
+- Optional border for the navigation bar and selected item
+- Numeric, text, dot, and custom badges
+- Different icons for active and inactive states
+- Support for `IconData` and custom widgets
+- Custom item and indicator builders
+- Optional haptic feedback
+- Optional ambient fade behind the navigation bar
+- Flutter `ThemeExtension` support
+- Works with Material, Cupertino, and third-party icon packs
+- Cross-platform support
 
-- 🫧 **Frosted Glassmorphism**: Pure floating glass pill with customizable backdrop blur (`BackdropFilter`), translucent background, subtle border highlight, and soft elevation shadows.
-- 💊 **Smooth Gliding Pill Indicator**: Animated pill capsule indicator that glides seamlessly across tabs with fluid easing curves (`Curves.fastEaseInToSlowEaseOut`).
-- 🎨 **Manual Border & Selected Item Border Control**: Independently customize or disable the container border and the selected item indicator border with manual color and strength controls.
-- 🌊 **Ambient Bottom Fade Gradient**: Optional ambient gradient overlay (`IOS26AmbientFade` / `IOS26NavScaffold`) ensuring scrollable body content flows beautifully underneath the floating bar without visual clashes.
-- 🎛️ **Zero Hardcoded Styles**:
-  - Adjust active colors, inactive colors, pill capsule tints, borders, shadows, blur sigmas, and margins.
-  - Built-in presets: `IOS26NavThemeData.light()`, `IOS26NavThemeData.dark()`, and `IOS26NavThemeData.resolve(context)` with full support for Flutter's `ThemeExtension`.
-  - Supports any `IconData` (Material, Cupertino, Lucide, FontAwesome) or custom `Widget` (SVG, Image, Lottie, Rive).
-  - Independent active and inactive icon states.
-  - Built-in support for numeric badges (`badgeCount`), textual badges (`badgeText`), dot badges (`showBadge`), or custom badge widgets.
-  - Custom indicator and item builder hooks for complete layout control.
-- 📳 **Haptic Feedback**: Subtle iOS-style tactile feedback on tab selection.
-- 🌐 **Cross-Platform**: Fully compatible with Android, iOS, Web, macOS, Windows, and Linux.
-
----
-
-## 📱 Platform Support
+## Platform support
 
 | Platform | Support |
-|---|---|
-| **iOS** | Supported |
-| **Android** | Supported |
-| **Web** | Supported (HTML / CanvasKit / Wasm) |
-| **macOS** | Supported |
-| **Windows** | Supported |
-| **Linux** | Supported |
+| --- | --- |
+| iOS | Yes |
+| Android | Yes |
+| Web | Yes |
+| macOS | Yes |
+| Windows | Yes |
+| Linux | Yes |
 
----
+## Getting started
 
-## 🚀 Getting Started
-
-Add `ios26_bottom_navigationbar` to your `pubspec.yaml`:
+Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ios26_bottom_navigationbar: ^0.0.1
+  ios26_bottom_navigationbar: ^0.0.2
 ```
 
-Import the package in your Dart code:
+Then import it:
 
 ```dart
 import 'package:ios26_bottom_navigationbar/ios26_bottom_navigationbar.dart';
 ```
 
----
+## Usage
 
-## 📖 Usage
+### Using `IOS26NavScaffold`
 
-### 1. Turnkey Usage with `IOS26NavScaffold`
+If you want the complete floating navigation setup, `IOS26NavScaffold` is the easiest option.
 
-The easiest and recommended way to achieve the full iOS 26 look is using `IOS26NavScaffold`. It automatically sets up the full-screen stack, ambient fade gradient, and floating bar positioning:
+It handles the layout for you, including the ambient fade behind the navigation bar.
 
 ```dart
 import 'package:flutter/material.dart';
@@ -85,11 +82,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   Widget build(BuildContext context) {
     return IOS26NavScaffold(
       body: Center(
-        child: Text('Selected Index: $_currentIndex'),
+        child: Text('Selected index: $_currentIndex'),
       ),
       navigationBar: IOS26BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
+        onTap: (index) {
+          setState(() => _currentIndex = index);
+        },
         items: const [
           IOS26NavItem.icon(
             icon: Icons.home_outlined,
@@ -97,27 +96,26 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             label: 'Home',
           ),
           IOS26NavItem.icon(
-            icon: Icons.local_pharmacy_outlined,
-            activeIcon: Icons.local_pharmacy_rounded,
-            label: 'Pharmacy',
-            badgeCount: 2,
+            icon: Icons.explore_outlined,
+            activeIcon: Icons.explore_rounded,
+            label: 'Explore',
           ),
           IOS26NavItem.icon(
-            icon: Icons.medical_services_outlined,
-            activeIcon: Icons.medical_services_rounded,
-            label: 'Doctors',
+            icon: Icons.favorite_outline_rounded,
+            activeIcon: Icons.favorite_rounded,
+            label: 'Favorites',
+            badgeCount: 3,
           ),
           IOS26NavItem.icon(
-            icon: Icons.auto_awesome_outlined,
-            activeIcon: Icons.auto_awesome_rounded,
-            label: 'AI Chat',
+            icon: Icons.notifications_none_rounded,
+            activeIcon: Icons.notifications_rounded,
+            label: 'Alerts',
             badgeText: 'NEW',
           ),
           IOS26NavItem.icon(
-            icon: Icons.settings_outlined,
-            activeIcon: Icons.settings_rounded,
-            label: 'Settings',
-            showBadge: true,
+            icon: Icons.person_outline_rounded,
+            activeIcon: Icons.person_rounded,
+            label: 'Profile',
           ),
         ],
       ),
@@ -126,47 +124,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 }
 ```
 
----
+### Using it with a regular `Scaffold`
 
-### 2. Manual Border & Selected Item Border Customization
-
-You can manually control the border of the container pill as well as the **selected item indicator pill** directly on `IOS26BottomNavigationBar`, per-tab on `IOS26NavItem`, or via `IOS26NavThemeData`:
-
-```dart
-IOS26BottomNavigationBar(
-  currentIndex: _currentIndex,
-  // Container pill border:
-  borderColor: Colors.purple.withValues(alpha: 0.5),
-  borderWidth: 2.0,
-  // Selected item indicator border:
-  selectedItemBorderColor: Colors.amber, // Highlight active pill border
-  selectedItemBorderWidth: 1.5,
-  items: [
-    const IOS26NavItem.icon(icon: Icons.home, label: 'Home'),
-    // Per-item selected border override:
-    const IOS26NavItem.icon(
-      icon: Icons.star,
-      label: 'VIP',
-      selectedBorderColor: Colors.cyanAccent,
-      selectedBorderWidth: 2.0,
-    ),
-  ],
-)
-
-// Or disable borders completely:
-IOS26BottomNavigationBar(
-  currentIndex: _currentIndex,
-  borderWidth: 0.0,             // Disables container border
-  selectedItemBorderWidth: 0.0, // Disables selected item indicator border
-  items: items,
-)
-```
-
----
-
-### 3. Standalone Floating Bar in Any `Scaffold`
-
-You can also drop `IOS26BottomNavigationBar` into your existing `Scaffold` or custom `Stack`:
+You don't have to use `IOS26NavScaffold`. The navigation bar can also be used directly with your existing `Scaffold`.
 
 ```dart
 Scaffold(
@@ -174,54 +134,165 @@ Scaffold(
   body: MyScrollableContent(),
   bottomNavigationBar: IOS26BottomNavigationBar(
     currentIndex: _selectedIndex,
-    onTap: (index) => setState(() => _selectedIndex = index),
+    onTap: (index) {
+      setState(() => _selectedIndex = index);
+    },
     items: const [
-      IOS26NavItem.icon(icon: Icons.home, label: 'Home'),
-      IOS26NavItem.icon(icon: Icons.search, label: 'Search'),
-      IOS26NavItem.icon(icon: Icons.person, label: 'Profile'),
+      IOS26NavItem.icon(
+        icon: Icons.home_outlined,
+        activeIcon: Icons.home_rounded,
+        label: 'Home',
+      ),
+      IOS26NavItem.icon(
+        icon: Icons.search_outlined,
+        activeIcon: Icons.search_rounded,
+        label: 'Search',
+      ),
+      IOS26NavItem.icon(
+        icon: Icons.person_outline_rounded,
+        activeIcon: Icons.person_rounded,
+        label: 'Profile',
+      ),
     ],
   ),
 );
 ```
 
----
+## Customizing the borders
 
-### 4. Custom Icons & Widgets (SVGs, Images, Lottie)
+Both the outer navigation bar and the selected item indicator have their own border settings.
 
-You can pass arbitrary widgets as icons:
+```dart
+IOS26BottomNavigationBar(
+  currentIndex: _currentIndex,
+
+  borderColor: Colors.purple.withValues(alpha: 0.5),
+  borderWidth: 2.0,
+
+  selectedItemBorderColor: Colors.amber,
+  selectedItemBorderWidth: 1.5,
+
+  items: const [
+    IOS26NavItem.icon(
+      icon: Icons.home_outlined,
+      activeIcon: Icons.home_rounded,
+      label: 'Home',
+    ),
+    IOS26NavItem.icon(
+      icon: Icons.star_outline,
+      activeIcon: Icons.star,
+      label: 'VIP',
+      selectedBorderColor: Colors.cyanAccent,
+      selectedBorderWidth: 2.0,
+    ),
+  ],
+);
+```
+
+You can also disable either border by setting its width to `0`:
+
+```dart
+IOS26BottomNavigationBar(
+  currentIndex: _currentIndex,
+  borderWidth: 0,
+  selectedItemBorderWidth: 0,
+  items: items,
+);
+```
+
+## Custom icons and widgets
+
+`IOS26NavItem` supports both `IconData` and custom widgets.
+
+For example, you can use SVGs, images, Lottie animations, Rive animations, or your own widgets:
 
 ```dart
 IOS26NavItem.custom(
-  icon: Image.asset('assets/icons/home_outline.png', width: 20),
-  activeIcon: Image.asset('assets/icons/home_filled.png', width: 20),
+  icon: Image.asset(
+    'assets/icons/home_outline.png',
+    width: 20,
+  ),
+  activeIcon: Image.asset(
+    'assets/icons/home_filled.png',
+    width: 20,
+  ),
   label: 'Home',
-),
+);
 ```
 
----
+You can also use any icon package that provides `IconData`, including Material Icons, Cupertino Icons, Lucide, and Font Awesome.
 
-### 5. Custom Styling & Themes
+## Badges
 
-`ios26_bottom_navigationbar` offers deep styling control via `IOS26NavThemeData`.
+There are several ways to add a badge to an item.
 
-#### Per-Instance Override:
+### Numeric badge
+
+```dart
+IOS26NavItem.icon(
+  icon: Icons.notifications_outlined,
+  activeIcon: Icons.notifications,
+  label: 'Notifications',
+  badgeCount: 5,
+);
+```
+
+### Text badge
+
+```dart
+IOS26NavItem.icon(
+  icon: Icons.auto_awesome_outlined,
+  activeIcon: Icons.auto_awesome,
+  label: 'Discover',
+  badgeText: 'NEW',
+);
+```
+
+### Dot badge
+
+```dart
+IOS26NavItem.icon(
+  icon: Icons.chat_outlined,
+  activeIcon: Icons.chat,
+  label: 'Messages',
+  showBadge: true,
+);
+```
+
+For more control, you can provide your own badge widget through the `badge` property.
+
+## Styling
+
+The navigation bar can be customized per instance using `IOS26NavThemeData`.
+
 ```dart
 IOS26BottomNavigationBar(
   currentIndex: _currentIndex,
   onTap: _onTap,
   style: IOS26NavThemeData.light(
-    activeColor: const Color(0xFF5B15FC), // Apple Purple
+    activeColor: const Color(0xFF5B15FC),
     inactiveColor: const Color(0xFF6B7280),
     backgroundColor: const Color(0xFFF6F6F8).withValues(alpha: 0.80),
     indicatorColor: Colors.white.withValues(alpha: 0.94),
-    height: 64.0,
+    height: 64,
     borderRadius: BorderRadius.circular(40),
   ),
   items: items,
-)
+);
 ```
 
-#### Global App Theme Integration:
+There are built-in light and dark presets:
+
+```dart
+IOS26NavThemeData.light()
+IOS26NavThemeData.dark()
+IOS26NavThemeData.resolve(context)
+```
+
+### Using it with `ThemeData`
+
+`IOS26NavThemeData` is also a `ThemeExtension`, so it can be added directly to your application's theme.
+
 ```dart
 MaterialApp(
   theme: ThemeData(
@@ -240,72 +311,80 @@ MaterialApp(
       ),
     ],
   ),
-  home: const MyHomeScreen(),
 );
 ```
 
----
-
-## 🛠️ API Reference
+## API
 
 ### `IOS26NavItem`
 
 | Property | Type | Description |
-|---|---|---|
-| `icon` | `Widget?` | Unselected icon widget (e.g. SVG or Image) |
-| `iconData` | `IconData?` | Shorthand icon font data |
-| `activeIcon` | `Widget?` | Selected icon widget |
-| `activeIconData` | `IconData?` | Selected shorthand icon font data |
-| `label` | `String?` | Text label displayed under icon |
-| `customLabel` | `Widget?` | Custom widget to display as label |
-| `activeColor` | `Color?` | Custom active color override for this item |
-| `inactiveColor` | `Color?` | Custom inactive color override for this item |
-| `selectedBorder` | `BoxBorder?` | Custom border override when this item is selected |
-| `selectedBorderColor` | `Color?` | Custom border color when this item is selected |
-| `selectedBorderWidth` | `double?` | Custom border width when this item is selected |
+| --- | --- | --- |
+| `icon` | `Widget?` | Icon shown when the item is inactive |
+| `iconData` | `IconData?` | IconData shorthand for the inactive icon |
+| `activeIcon` | `Widget?` | Icon shown when the item is selected |
+| `activeIconData` | `IconData?` | IconData shorthand for the active icon |
+| `label` | `String?` | Label shown below the icon |
+| `customLabel` | `Widget?` | Custom label widget |
+| `activeColor` | `Color?` | Active color override |
+| `inactiveColor` | `Color?` | Inactive color override |
+| `selectedBorder` | `BoxBorder?` | Custom selected-item border |
+| `selectedBorderColor` | `Color?` | Selected-item border color |
+| `selectedBorderWidth` | `double?` | Selected-item border width |
 | `badge` | `Widget?` | Custom badge widget |
-| `badgeCount` | `int?` | Numeric badge count (e.g. `5` or `99+`) |
-| `badgeText` | `String?` | Text badge (e.g. `'NEW'`) |
-| `showBadge` | `bool` | Displays small dot badge |
+| `badgeCount` | `int?` | Numeric badge |
+| `badgeText` | `String?` | Text badge |
+| `showBadge` | `bool` | Shows a dot badge |
 | `badgeColor` | `Color?` | Badge background color |
 | `badgeTextColor` | `Color?` | Badge text color |
-| `tooltip` | `String?` | Accessibility / hover tooltip |
-| `onTap` | `VoidCallback?` | Specific callback when this item is tapped |
-
----
+| `tooltip` | `String?` | Tooltip for accessibility and desktop/web |
+| `onTap` | `VoidCallback?` | Item-specific tap callback |
 
 ### `IOS26NavThemeData`
 
-| Property | Default (Light / Dark) | Description |
-|---|---|---|
-| `height` | `62.0` | Container bar height |
-| `padding` | `EdgeInsets.all(5.0)` | Internal container padding |
-| `margin` | `EdgeInsets.symmetric(horizontal: 16)` | Outer margin around floating pill |
-| `borderRadius` | `BorderRadius.circular(38.0)` | Capsule border radius |
-| `blurSigmaX` / `Y` | `30.0` | Backdrop filter blur intensity |
-| `backgroundColor` | `0xFFF6F6F8 (80%)` / `0xFF161618 (72%)` | Glass capsule background color |
-| `borderColor` | `Colors.white (85% / 18%)` | Manually controlled container border color |
-| `borderWidth` | `0.9` | Container border strength (`0.0` to disable) |
-| `border` | `effectiveBorder` | Full custom BoxBorder (overrides color/width) |
-| `boxShadow` | Subtle ambient drop shadow | Floating elevation shadows |
-| `indicatorColor` | `Colors.white (94% / 16%)` | Gliding pill capsule background |
-| `selectedItemBorderColor` | `null` | Gliding pill indicator border color |
-| `selectedItemBorderWidth` | `0.0` | Gliding pill indicator border strength |
-| `selectedItemBorder` | `effectiveIndicatorBorder` | Full custom BoxBorder for selected pill |
-| `indicatorBorderRadius` | `BorderRadius.circular(30.0)` | Gliding pill border radius |
-| `indicatorAnimationDuration`| `300ms` | Gliding animation duration |
-| `indicatorAnimationCurve` | `Curves.fastEaseInToSlowEaseOut` | Gliding animation easing curve |
-| `activeColor` | `0xFF5B15FC` / `0xFFBF5AF2` | Active icon and label tint |
-| `inactiveColor` | `0xFF6B7280` / `0xFF8E8E93` | Inactive icon and label tint |
-| `iconSize` | `19.0` | Icon dimension |
-| `selectedIconScale` | `1.08` | Scale factor on active icon |
-| `enableHapticFeedback` | `true` | Subtle iOS haptic feedback on tap |
-| `enableAmbientFade` | `true` | Soft bottom ambient gradient overlay |
+Some of the main styling options include:
 
----
+| Property | Description |
+| --- | --- |
+| `height` | Navigation bar height |
+| `padding` | Internal padding |
+| `margin` | Outer margin |
+| `borderRadius` | Navigation bar corner radius |
+| `blurSigmaX` / `blurSigmaY` | Backdrop blur amount |
+| `backgroundColor` | Glass background color |
+| `borderColor` | Outer border color |
+| `borderWidth` | Outer border width |
+| `border` | Full custom outer border |
+| `boxShadow` | Floating bar shadow |
+| `indicatorColor` | Selected-item pill color |
+| `selectedItemBorderColor` | Selected-item border color |
+| `selectedItemBorderWidth` | Selected-item border width |
+| `selectedItemBorder` | Full custom selected-item border |
+| `indicatorBorderRadius` | Selected-item pill radius |
+| `indicatorAnimationDuration` | Selection animation duration |
+| `indicatorAnimationCurve` | Selection animation curve |
+| `activeColor` | Active icon and label color |
+| `inactiveColor` | Inactive icon and label color |
+| `iconSize` | Icon size |
+| `selectedIconScale` | Active icon scale |
+| `enableHapticFeedback` | Enables haptic feedback |
+| `enableAmbientFade` | Enables the bottom ambient fade |
 
-## 📄 Additional Information
+## Example
 
-- **Example**: Check out the full interactive demonstration in the [`example/`](example/) directory.
-- **Bugs & Issues**: Please report any bugs or feature requests on the [GitHub Issues](https://github.com/example/ios26_bottom_navigationbar/issues) tracker.
-- **License**: MIT License. See [LICENSE](LICENSE) for details.
+The `example/` directory contains a small interactive app demonstrating the navigation bar, including light/dark themes, badges, borders, and different customization options.
+
+You can run it locally with:
+
+```bash
+cd example
+flutter run
+```
+
+## Issues and feature requests
+
+If you find a bug or have an idea for improving the package, please open an issue on the project's GitHub repository.
+
+## License
+
+This package is released under the MIT License. See [LICENSE](LICENSE) for details.
